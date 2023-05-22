@@ -1,0 +1,86 @@
+ public class BackendRequestAuth
+    {
+        public IEnumerator SignIn(Backend.Model.Request.SignIn requestData, Action<Backend.Model.Response.SignIn, string> callback)
+        {
+            byte[] bytes = Encoding.ASCII.GetBytes(requestData.ToJson());
+            UnityWebRequest request = BackendUtils.CreatePost(BackendSystem.Instance.MarketPlaceUrl + "/member/session", bytes, BackendUtils.ContentType.JSON, false);
+
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                Backend.Model.Response.SignIn response = Backend.Model.Response.ResponseBase.FromJson<Backend.Model.Response.SignIn>(request.downloadHandler.text);
+
+                callback?.Invoke(response, null);
+            }
+            else
+            {
+                callback?.Invoke(null, request.error);
+            }
+
+            request.Dispose();
+        }
+
+        public IEnumerator TwoFA(Backend.Model.Request.TwoFA requestData, Action<Backend.Model.Response.TwoFA, string> callback)
+        {
+            byte[] bytes = Encoding.ASCII.GetBytes(requestData.ToJson());
+            UnityWebRequest request = BackendUtils.CreatePost(BackendSystem.Instance.MarketPlaceUrl + "/member/twoFactor", bytes, BackendUtils.ContentType.JSON, false);
+
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                Backend.Model.Response.TwoFA response = Backend.Model.Response.ResponseBase.FromJson<Backend.Model.Response.TwoFA>(request.downloadHandler.text);
+
+                callback?.Invoke(response, null);
+            }
+            else
+            {
+                callback?.Invoke(null, request.error);
+            }
+
+            request.Dispose();
+        }
+
+        public IEnumerator SignUp(Backend.Model.Request.SignUp requestData, Action<Backend.Model.Response.SignUp, string> callback)
+        {
+            byte[] bytes = Encoding.ASCII.GetBytes(requestData.ToJson());
+            UnityWebRequest request = BackendUtils.CreatePost(BackendSystem.Instance.MarketPlaceUrl + "/member", bytes, BackendUtils.ContentType.JSON, false);
+
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                Backend.Model.Response.SignUp response = Backend.Model.Response.ResponseBase.FromJson<Backend.Model.Response.SignUp>(request.downloadHandler.text);
+
+                callback?.Invoke(response, null);
+            }
+            else
+            {
+                callback?.Invoke(null, request.error);
+            }
+
+            request.Dispose();
+        }
+
+        public IEnumerator VerificationCode(Backend.Model.Request.VerificationCode requestData, Action<Backend.Model.Response.VerificationCode, string> callback)
+        {
+            byte[] bytes = Encoding.ASCII.GetBytes(requestData.ToJson());
+            UnityWebRequest request = BackendUtils.CreatePost(BackendSystem.Instance.MarketPlaceUrl + "/member/emailVerification", bytes, BackendUtils.ContentType.JSON, false);
+
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                Backend.Model.Response.VerificationCode response = Backend.Model.Response.ResponseBase.FromJson<Backend.Model.Response.VerificationCode>(request.downloadHandler.text);
+
+                callback?.Invoke(response, null);
+            }
+            else
+            {
+                callback?.Invoke(null, request.error);
+            }
+
+            request.Dispose();
+        }
+}
