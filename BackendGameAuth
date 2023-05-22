@@ -1,0 +1,196 @@
+ public class BackendGameAuth
+    {
+        private IPlatformServicesAuth m_AuthPlatformGoogle;
+        private IPlatformServicesAuth m_AuthPlatformApple;
+
+        public void Initialise()
+        {
+            m_AuthPlatformGoogle = new PlatformServicesAuthGoogle();
+            m_AuthPlatformGoogle.Initialise();
+        }
+
+        public bool IsAuthenticated { get; private set; } = false;
+
+        public string AuthToken     { get; set; } = null;
+
+        private string m_resfreshToken;
+        private string m_platformAuthToken;
+
+        public IEnumerator SignIn(Backend.GameData.SignInDataIn dataIn, Action<Backend.GameData.SignInDataOut, string> callback)
+        {
+            IsAuthenticated = false;
+            AuthToken       = "";
+
+            return BackendSystem.Instance.Data.Auth.SignIn(dataIn, (dataOut, error) =>
+            {
+                Backend.GameData.SignInDataOut signInResult = dataOut;
+
+                if(signInResult != null && signInResult.error.success)
+                {
+                    AuthToken       = signInResult.idToken;
+                    m_resfreshToken = signInResult.refreshId;
+
+                    if (!System.String.IsNullOrEmpty(AuthToken))
+                    {
+                        IsAuthenticated = true;
+                    }
+                }
+
+                callback(dataOut, error);
+            });
+        }
+
+        public IEnumerator TwoFA(Backend.GameData.TwoFADataIn dataIn, Action<Backend.GameData.TwoFADataOut, string> callback)
+        {
+            IsAuthenticated = false;
+            AuthToken       = "";
+
+            return BackendSystem.Instance.Data.Auth.TwoFA(dataIn, (dataOut, error) =>
+            {
+                Backend.GameData.TwoFADataOut twoFADataOutResult = dataOut;
+
+                if (twoFADataOutResult != null && twoFADataOutResult.error.success)
+                {
+                    AuthToken       = twoFADataOutResult.idToken;
+                    m_resfreshToken = twoFADataOutResult.refreshId;
+
+                    if (!System.String.IsNullOrEmpty(AuthToken))
+                    {
+                        IsAuthenticated = true;
+                    }
+                }
+
+                callback(dataOut, error);
+            });
+        }
+
+        public IEnumerator SignUp(Backend.GameData.SignUpDataIn dataIn, Action<Backend.GameData.SignUpDataOut, string> callback)
+        {
+            return BackendSystem.Instance.Data.Auth.SignUp(dataIn, (dataOut, error) =>
+            {
+                Backend.GameData.SignUpDataOut signUpDataOut = dataOut;
+
+                if (signUpDataOut != null && signUpDataOut.error.success)
+                {
+                    AuthToken       = signUpDataOut.idToken;
+                    m_resfreshToken = signUpDataOut.refreshId;
+
+                    if (!System.String.IsNullOrEmpty(AuthToken))
+                    {
+                        IsAuthenticated = true;
+                    }
+
+                }
+
+                callback(dataOut, error);
+            });
+        }
+
+        public IEnumerator VerificationCode(Backend.GameData.VerificationCodeDataIn dataIn, Action<Backend.GameData.VerificationCodeDataOut, string> callback)
+        {
+            return BackendSystem.Instance.Data.Auth.VerificationCode(dataIn, (dataOut, error) =>
+            {
+                callback(dataOut, error);
+            });
+        }
+
+        public IEnumerator VerificationNumber(Backend.GameData.VerificationCodeDataIn dataIn, Action<Backend.GameData.VerificationCodeDataOut, string> callback)
+        {
+            return BackendSystem.Instance.Data.Auth.VerificationNumber(dataIn, (dataOut, error) =>
+            {
+                callback(dataOut, error);
+            });
+        }
+
+        public IEnumerator PasswordChange(Backend.GameData.PasswordChangeDataIn dataIn, Action<Backend.GameData.PasswordChangeDataOut, string> callback)
+        {
+            return BackendSystem.Instance.Data.Auth.PasswordChange(dataIn, (dataOut, error) =>
+            {
+                callback(dataOut, error);
+            });
+        }
+
+        public IEnumerator GetServiceTerms(string language, Action<Backend.GameData.ServiceTermsDataOut, string> callback)
+        {
+            return BackendSystem.Instance.Data.Auth.GetServiceTerms(language, (dataOut, error) =>
+            {
+                callback(dataOut, error);
+            });
+        }
+
+        public IEnumerator GetProfile(Action<Backend.GameData.ProfileDataOut, byte[], string> callback)
+        {
+            return BackendSystem.Instance.Game.Auth.GetProfile((profileDataOut, error) =>
+            {
+                if (profileDataOut != null)
+                {
+                    // download the image.
+                    BackendSystem.Instance.StartCoroutine(BackendSystem.Instance.Game.Helper.FileDownload(profileDataOut.profileImageUrl, (dataOut, error) =>
+                    {
+                        callback(profileDataOut, dataOut, error);
+                    }));
+                }
+                else
+                {
+                    callback(null, null, error);
+                }
+            });
+        }
+
+        public IEnumerator GetProfile(Action<Backend.GameData.ProfileDataOut, string> callback)
+        {
+            return BackendSystem.Instance.Data.Auth.GetProfile((dataOut, error) =>
+            {
+                callback(dataOut, error);
+            });
+        }
+
+        public IEnumerator SetProfile(string nickName, string fileName, byte[] fileData, Action<Backend.GameData.SetProfileDataOut, string> callback)
+        {
+            if (fileData != null)
+            {
+                return BackendSystem.Instance.Game.Helper.FileUpload(fileName, FileType.PROFILE_IMAGE, fileData, (data, error) =>
+                {
+                    if (data != null)
+                    {
+                        BackendSystem.Instance.StartCoroutine(BackendSystem.Instance.Game.Auth.SetProfile(new SetProfileDataIn { nickName = nickName, profileImageUrl = data, profileImageUrlSize = fileData.Length }, callback));
+                    }
+                    else
+                    {
+                        callback(null, error);
+                    }
+                });
+            }
+            else
+            {
+                return BackendSystem.Instance.Data.Auth.SetProfile(new SetProfileDataIn { nickName = nickName, profileImageUrl = null, profileImageUrlSize = 0 }, (dataOut, error) =>
+                {
+                    callback(dataOut, error);
+                });
+            }
+        }
+
+        private IEnumerator SetProfile(Backend.GameData.SetProfileDataIn dataIn, Action<Backend.GameData.SetProfileDataOut, string> callback)
+        {
+            return BackendSystem.Instance.Data.Auth.SetProfile(dataIn, (dataOut, error) =>
+            {
+                callback(dataOut, error);
+            });
+        }
+
+        public IEnumerator SetTwoFA(Backend.GameData.SetTwoFADataIn dataIn, Action<Backend.GameData.SetTwoFADataOut, string> callback)
+        {
+            return BackendSystem.Instance.Data.Auth.SetTwoFA(dataIn, (dataOut, error) =>
+            {
+                callback(dataOut, error);
+            });
+        }
+
+        public IEnumerator OTPTwoFactorVerification(Backend.GameData.OTPTwoFactorVerificationDataIn dataIn, Action<Backend.GameData.OTPTwoFactorVerificationDataOut, string> callback)
+        {
+            return BackendSystem.Instance.Data.Auth.OTPTwoFactorVerification(dataIn, (dataOut, error) =>
+            {
+                callback(dataOut, error);
+            });
+        }
+}
