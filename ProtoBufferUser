@@ -1,0 +1,142 @@
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class Users : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1, Name = @"userBaseData")]
+        public global::System.Collections.Generic.List<UserBaseData> userBaseDatas { get; } = new global::System.Collections.Generic.List<UserBaseData>();
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class UserProfiles : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1, Name = @"userProfileData")]
+        public global::System.Collections.Generic.List<UserProfileData> userProfileDatas { get; } = new global::System.Collections.Generic.List<UserProfileData>();
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class UserBaseData : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string userID { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(2, Name = @"username")]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string Username { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(3, Name = @"profileImage")]
+        public global::System.Collections.Generic.List<byte[]> profileImages { get; } = new global::System.Collections.Generic.List<byte[]>();
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class UserProfileData : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public UserBaseData baseUserData { get; set; }
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class LoggedInUserData : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public UserProfileData userProfileData { get; set; }
+
+        [global::ProtoBuf.ProtoMember(2)]
+        public bool isAuthenticated { get; set; }
+
+        [global::ProtoBuf.ProtoMember(3)]
+        public AuthenticationResult lastAuthenticationResult { get; set; }
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class AuthenticationResult : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string accessToken { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(2)]
+        public long expiresIn { get; set; }
+
+        [global::ProtoBuf.ProtoMember(3)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string tokenID { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(4)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string refreshToken { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(5)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string tokenType { get; set; } = "";
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class Wallet : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1, Name = @"signature")]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string Signature { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(2)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string accountPublicKey { get; set; } = "";
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class MetaMaskWallet : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string phantomEncryptionPublicKey { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(2, Name = @"nonce")]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string Nonce { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(3, Name = @"session")]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string Session { get; set; } = "";
+
+    }
+
+}
