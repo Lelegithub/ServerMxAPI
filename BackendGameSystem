@@ -1,0 +1,24 @@
+ public class BackendGameSystem
+    {
+        public BackendGameAuth   Auth   { get; }
+        public BackendGameUser   User   { get; }
+        public BackendGameNFT    NFT    { get; }
+        public BackendGameMarket Market { get; }
+        public BackendGameLobby  Lobby  { get; }
+        public BackendGameHelper Helper { get; }
+
+        public BackendGameSystem()
+        {
+            Auth   = new BackendGameAuth();
+            User   = new BackendGameUser();
+            NFT    = new BackendGameNFT();
+            Market = new BackendGameMarket();
+            Lobby  = new BackendGameLobby();
+            Helper = new BackendGameHelper();
+        }
+
+        public void Initialise()
+        {
+            Auth.Initialise();
+        }
+    }
