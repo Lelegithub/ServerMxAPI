@@ -1,3 +1,2 @@
 # ServerMxAPI
-
-Core Base ServerAPI Architecture with ProtoBuffers
+Demo Core Base ServerAPI Architecture with ProtoBuffers
